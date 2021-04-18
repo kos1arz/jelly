@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+
+{% block body %}
+
+    <div id="addEmployeeModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form {% if client is defined %} 
+                        action="{{ url('client_list_edit_post', { id: client.id }) }}" 
+                    {% else %}
+                        action="{{ url('client_list_create_post') }}" 
+                    {% endif %} 
+                    method="post"
+                >
+                    <input type="hidden" name="token" value="{{ csrf_token('create-item') }}"/>
+                    <div class="modal-header">	
+                        {% if client is defined %}					
+                            <h4 class="modal-title">Edit Employee</h4>
+                        {% else %}
+                            <h4 class="modal-title">Add Employee</h4>
+                        {% endif %} 
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                name="name" 
+                                {% if client is defined %} value="{{ client.name }}" {% endif %} 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Surname</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                name="surname" 
+                                {% if client is defined %} value="{{ client.surname }}" {% endif %} 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                name="email" 
+                                {% if client is defined %} value="{{ client.email }}" {% endif %} 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                name="phone" 
+                                {% if client is defined %} value="{{ client.phone }}" {% endif %} 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Client type</label>
+                            <select
+                                name="clientType" 
+                            >
+                                {% for type in clientType %}
+                                    <option 
+                                        value="{{ type.id }}" 
+                                        {% if client is defined %} 
+                                            {% if type.id == client.clientType.id %} selected="selected" {% endif %}
+                                        {% endif %} 
+                                    >
+                                            {{ type.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>					
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/" class="btn btn-default">Cancel</a>
+                        <input type="submit" class="btn btn-success" value="Save">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
